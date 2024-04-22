@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("telMain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+565013afe675d0cbcd0b3ec6a159c734d1e9b0f3")]
 [assembly: System.Reflection.AssemblyProductAttribute("telMain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("telMain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

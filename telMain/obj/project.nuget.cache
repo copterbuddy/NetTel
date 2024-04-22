@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "e/AwADoo3RgXeH2LWuIcfHzo5DmfP/KKzCMjVjiykhTvVXErixuvHF6nEcM19q75Y8INwtErSU5+O3ZlV7GuYQ==",
+  "dgSpecHash": "/oqeUjKsp4abLLmP9jnMC0aZz3Hy4vIxWF8F2sooZSrtdnLHbKIhe/B2yK10oLxEM8olG2fDLoVGTN1e55OcIA==",
   "success": true,
   "projectFilePath": "/home/copter/myProject/dotnet/telMain/telMain/telMain.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/home/copter/.nuget/packages/microsoft.extensions.dependencyinjection/8.0.0/microsoft.extensions.dependencyinjection.8.0.0.nupkg.sha512",
+    "/home/copter/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.0/microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512"
+  ],
   "logs": []
 }

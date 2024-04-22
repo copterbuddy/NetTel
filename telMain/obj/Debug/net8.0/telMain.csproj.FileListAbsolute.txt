@@ -27,10 +27,3 @@
 /home/copter/myProject/dotnet/telMain/telMain/obj/Debug/net8.0/telMain.pdb
 /home/copter/myProject/dotnet/telMain/telMain/obj/Debug/net8.0/telMain.genruntimeconfig.cache
 /home/copter/myProject/dotnet/telMain/telMain/obj/Debug/net8.0/ref/telMain.dll
-/home/copter/myProject/dotnet/telMain/telMain/bin/Debug/net8.0/Microsoft.OpenApi.dll
-/home/copter/myProject/dotnet/telMain/telMain/bin/Debug/net8.0/Swashbuckle.AspNetCore.Swagger.dll
-/home/copter/myProject/dotnet/telMain/telMain/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerGen.dll
-/home/copter/myProject/dotnet/telMain/telMain/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerUI.dll
-/home/copter/myProject/dotnet/telMain/telMain/obj/Debug/net8.0/telMain.csproj.AssemblyReference.cache
-/home/copter/myProject/dotnet/telMain/telMain/obj/Debug/net8.0/telMain.MvcApplicationPartsAssemblyInfo.cs
-/home/copter/myProject/dotnet/telMain/telMain/obj/Debug/net8.0/telMain.csproj.CopyComplete

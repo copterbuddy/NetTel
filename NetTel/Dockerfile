@@ -19,4 +19,5 @@ RUN dotnet publish NetTel.csproj -c $configuration -o /app/publish /p:UseAppHost
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "telMain.dll"]
+ENTRYPOINT ["dotnet", "NetTel.dll"]
+# ENTRYPOINT ["dotnet", "RUN"]

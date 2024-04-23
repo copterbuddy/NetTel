@@ -13,8 +13,8 @@ volumes:
     driver: local
 
 services:
-  telMain:
-    image: teltest
+  NetTel:
+    image: nettel
     depends_on:
       - otel-collector
     build:

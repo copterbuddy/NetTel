@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NetTel")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e81471ccd8cc673f10d02b5f70ec5518bdae301f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+10d570169043e2292aefa459b904d0c6e1284e7d")]
 [assembly: System.Reflection.AssemblyProductAttribute("NetTel")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NetTel")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

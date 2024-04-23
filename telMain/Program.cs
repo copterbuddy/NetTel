@@ -1,14 +1,30 @@
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
 using telMain.Components;
 
-internal class Program
+public class Program
 {
-    private static void Main()
+    public static void Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder();
+        var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
+
+        builder.Services.AddOpenTelemetry()
+            .WithMetrics(opt =>
+            opt
+                .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("OpenRemoteManage.GatewayAPI"))
+                .AddMeter("OpenRemoteManagerMeter")
+                .AddAspNetCoreInstrumentation()
+                .AddRuntimeInstrumentation()
+                .AddProcessInstrumentation()
+                .AddOtlpExporter(opt =>
+                {
+                    opt.Endpoint = new Uri(builder.Configuration["Otpl:Endpoint"]);
+                })
+            );
 
         var app = builder.Build();
 

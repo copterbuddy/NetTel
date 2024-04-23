@@ -1,0 +1,6 @@
+@NetTel_HostAddress = http://localhost:5161
+
+GET {{NetTel_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

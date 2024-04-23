@@ -11,8 +11,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddOpenTelemetry()
     .WithMetrics(opt =>
     opt
-        .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("OpenRemoteManage.GatewayAPI"))
-        .AddMeter("OpenRemoteManagerMeter")
+        .ConfigureResource(resource => resource.AddService("NetTel"))
+        .AddMeter("NetTel")
         .AddAspNetCoreInstrumentation()
         .AddRuntimeInstrumentation()
         .AddProcessInstrumentation()

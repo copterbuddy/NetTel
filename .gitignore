@@ -40,3 +40,5 @@ bld/
 [Oo]ut/
 msbuild.log
 
+bin/*
+obj/*

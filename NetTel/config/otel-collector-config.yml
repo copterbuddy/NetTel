@@ -10,7 +10,7 @@ exporters:
   prometheus:
     endpoint: otel-collector:8889
 
-  otlp:
+  otlp/jaeger:
     endpoint: jaeger:4317
     tls:
       insecure: true
@@ -36,4 +36,4 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [logging, otlp]
+      exporters: [logging, otlp/jaeger]

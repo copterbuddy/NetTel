@@ -3,11 +3,21 @@ receivers:
     protocols:
       grpc:
         endpoint: otel-collector:4317
+      http:
+        endpoint: otel-collector:4318
 
 exporters:
   prometheus:
     endpoint: otel-collector:8889
 
+  otlp:
+    endpoint: jaeger:4317
+    tls:
+      insecure: true
+
+  logging:
+    loglevel: debug
+    
 processors:
   batch:
 
@@ -21,4 +31,9 @@ service:
     metrics:
       receivers: [otlp]
       processors: [batch]
-      exporters: [prometheus]
+      exporters: [logging, prometheus]
+
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [logging, otlp]

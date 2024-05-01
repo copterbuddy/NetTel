@@ -1,5 +1,6 @@
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,15 +12,26 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddOpenTelemetry()
     .WithMetrics(opt =>
     opt
-        .ConfigureResource(resource => resource.AddService("NetTel"))
+        .ConfigureResource(resource => resource.AddService("NetTelMertric"))
         .AddMeter("NetTel")
         .AddAspNetCoreInstrumentation()
         .AddRuntimeInstrumentation()
         .AddProcessInstrumentation()
         .AddOtlpExporter(opt =>
         {
-            opt.Endpoint = new Uri(builder.Configuration["Otpl:Endpoint"]);
+            opt.Endpoint = new Uri(builder.Configuration["Otpl:MetricEndpoint"]);
         })
+    )
+    .WithTracing(opt =>
+        opt
+        .ConfigureResource(resource => resource.AddService("NetTelTrace"))
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddJaegerExporter(opt =>
+        {
+            opt.Endpoint = new Uri(builder.Configuration["Otpl:TracingEndpoint"]);
+        })
+
     );
 
 var app = builder.Build();

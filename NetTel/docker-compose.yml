@@ -23,11 +23,13 @@ services:
     ports:
       - 5131:5131
     environment:
-      Otel__Endpoint: http://otel-collector:4317
+      Otel__MetricEndpoint: http://otel-collector:4317,
+      Otel__TracingEndpoint: http://otel-collector:4317
     networks:
       - monitoring
   otel-collector:
-    image: otel/opentelemetry-collector:0.95.0
+    # image: otel/opentelemetry-collector:0.95.0
+    image: otel/opentelemetry-collector-contrib:0.99.0
     command: [ "--config=/etc/otel-collector-config.yml" ]
     volumes:
       - ./config/otel-collector-config.yml:/etc/otel-collector-config.yml
@@ -61,15 +63,31 @@ services:
     restart: unless-stopped
     networks:
       - monitoring
-  node_exporter:
-    image: quay.io/prometheus/node-exporter:v1.5.0
-    container_name: node_exporter
-    command: '--path.rootfs=/host'
-    pid: host
-    restart: unless-stopped
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
+  # node_exporter:
+  #   image: quay.io/prometheus/node-exporter:v1.5.0
+  #   container_name: node_exporter
+  #   command: '--path.rootfs=/host'
+  #   pid: host
+  #   restart: unless-stopped
+  #   volumes:
+  #     - /proc:/host/proc:ro
+  #     - /sys:/host/sys:ro
+  #     - /:/rootfs:ro
+  #   networks:
+  #     - monitoring
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "5775:5775"
+      - "6831:6831"
+      - "6832:6832"
+      - "5778:5778"
+      - "16686:16686"
+      - "14268:14268"
+      - "14250:14250"
+      - "9411:9411"
+      # - 13134:13133
+      # - 4318:4317
+
     networks:
       - monitoring

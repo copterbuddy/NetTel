@@ -16,10 +16,11 @@ exporters:
       insecure: true
 
   logging:
-    loglevel: debug
+    verbosity: detailed
     
 processors:
   batch:
+    timeout: 1s
 
 extensions:
   health_check:
@@ -31,9 +32,16 @@ service:
     metrics:
       receivers: [otlp]
       processors: [batch]
-      exporters: [logging, prometheus]
+      # exporters: [logging, prometheus]
+      exporters: [prometheus]
 
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [logging, otlp/jaeger]
+      # exporters: [logging, otlp/jaeger]
+      exporters: [otlp/jaeger]
+
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [logging]

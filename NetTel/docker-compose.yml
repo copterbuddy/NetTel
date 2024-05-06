@@ -23,8 +23,10 @@ services:
     ports:
       - 5131:5131
     environment:
+      ASPNETCORE_ENVIRONMENT: Development,
       Otel__MetricEndpoint: http://otel-collector:4317,
-      Otel__TracingEndpoint: http://otel-collector:4317
+      Otel__TracingEndpoint: http://otel-collector:4317,
+      Otel__LogEndpoint: http://otel-collector:4317
     networks:
       - monitoring
   otel-collector:
@@ -56,6 +58,10 @@ services:
   grafana:
     image: grafana/grafana-oss:latest
     container_name: grafana
+    depends_on:
+      - jaeger
+      - prometheus
+      - otel-collector
     ports:
       - '3000:3000'
     volumes:

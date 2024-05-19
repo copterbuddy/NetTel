@@ -78,6 +78,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.MapPrometheusScrapingEndpoint();
+
 app.UseHttpsRedirection();
 
 var summaries = new[]

@@ -27,7 +27,7 @@ builder.Logging.AddOpenTelemetry(options =>
     options.AddConsoleExporter();
     options.AddOtlpExporter(otlpOptions =>
         {
-            otlpOptions.Endpoint = new Uri(builder.Configuration["Otpl:LogEndpoint"] ?? throw new Exception());
+            otlpOptions.Endpoint = new Uri(builder.Configuration["Otpl:Endpoint"] ?? throw new Exception("Otpl:Endpoint cannot be null"));
         });
 });
 
@@ -52,7 +52,7 @@ builder.Services.AddOpenTelemetry()
         .AddPrometheusExporter()
         .AddOtlpExporter(opt =>
         {
-            opt.Endpoint = new Uri(builder.Configuration["Otpl:MetricEndpoint"] ?? throw new Exception());
+            opt.Endpoint = new Uri(builder.Configuration["Otpl:Endpoint"] ?? throw new Exception("Otpl:Endpoint cannot be null"));
         })
     )
     .WithTracing(opt =>
@@ -60,9 +60,9 @@ builder.Services.AddOpenTelemetry()
         .ConfigureResource(resource => resource.AddService("NetTelTrace"))
         .AddAspNetCoreInstrumentation()
         .AddHttpClientInstrumentation()
-        .AddJaegerExporter(opt =>
+        .AddOtlpExporter(opt =>
         {
-            opt.Endpoint = new Uri(builder.Configuration["Otpl:TracingEndpoint"] ?? throw new Exception());
+            opt.Endpoint = new Uri(builder.Configuration["Otpl:Endpoint"] ?? throw new Exception("Otpl:Endpoint cannot be null"));
         })
 
     );

@@ -38,8 +38,8 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      # exporters: [logging, otlp/jaeger]
-      exporters: [otlp/jaeger]
+      exporters: [logging, otlp/jaeger]
+      # exporters: [logging]
 
     logs:
       receivers: [otlp]

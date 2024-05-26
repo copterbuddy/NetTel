@@ -24,9 +24,7 @@ services:
       - 5131:5131
     environment:
       ASPNETCORE_ENVIRONMENT: Development,
-      Otel__MetricEndpoint: http://otel-collector:4317,
-      Otel__TracingEndpoint: http://otel-collector:4317,
-      Otel__LogEndpoint: http://otel-collector:4317
+      Otpl__Endpoint: http://otel-collector:4317
     networks:
       - monitoring
   otel-collector:

@@ -9,33 +9,25 @@ using Serilog.Sinks.OpenTelemetry;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Action<ResourceBuilder> configureResource = r => r.AddService(
-    serviceName: "copLog",//builder.Configuration.GetValue("ServiceName", defaultValue: "otel-test")!,
-    serviceVersion: typeof(Program).Assembly.GetName().Version?.ToString() ?? "unknown",
-    serviceInstanceId: Environment.MachineName);
-
-builder.Logging.ClearProviders();
-builder.Logging.AddOpenTelemetry(options =>
+builder.Logging.ClearProviders().AddOpenTelemetry(options =>
 {
     options.IncludeScopes = true;
     options.IncludeFormattedMessage = true;
 
-    var resourceBuilder = ResourceBuilder.CreateDefault();
-    configureResource(resourceBuilder);
+    var resourceBuilder = ResourceBuilder.CreateDefault().AddService("NetTelLog");
+    // configureResource(resourceBuilder);
     options.SetResourceBuilder(resourceBuilder);
 
     options.AddConsoleExporter();
     options.AddOtlpExporter(otlpOptions =>
         {
+            string headerKey = "signoz-access-token";
+            string headerValue = "<SIGNOZ_INGESTION_KEY>";
+
+            otlpOptions.Headers = $"{headerKey}={headerValue}";
+
             otlpOptions.Endpoint = new Uri(builder.Configuration["Otpl:Endpoint"] ?? throw new Exception("Otpl:Endpoint cannot be null"));
         });
-});
-
-builder.Services.AddLogging(options =>
-{
-    options.SetMinimumLevel(LogLevel.Debug);
-    options.ClearProviders();
-    options.AddConsole();
 });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -89,6 +81,11 @@ var summaries = new[]
 
 app.MapGet("/weatherforecast", (ILogger<Program> log) =>
 {
+    var status = "Running";
+    var currentTime = DateTime.UtcNow.ToString();
+
+    log.LogInformation($"Application Status changed to '{status}' at '{currentTime}'");
+
     log.LogWarning("this is original log");
     var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast

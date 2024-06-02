@@ -67,18 +67,6 @@ services:
     restart: unless-stopped
     networks:
       - monitoring
-  # node_exporter:
-  #   image: quay.io/prometheus/node-exporter:v1.5.0
-  #   container_name: node_exporter
-  #   command: '--path.rootfs=/host'
-  #   pid: host
-  #   restart: unless-stopped
-  #   volumes:
-  #     - /proc:/host/proc:ro
-  #     - /sys:/host/sys:ro
-  #     - /:/rootfs:ro
-  #   networks:
-  #     - monitoring
   jaeger:
     image: jaegertracing/all-in-one:latest
     ports:
@@ -90,8 +78,6 @@ services:
       - "14268:14268"
       - "14250:14250"
       - "9411:9411"
-      # - 13134:13133
-      # - 4318:4317
 
     networks:
       - monitoring

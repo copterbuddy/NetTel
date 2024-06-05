@@ -15,6 +15,12 @@ exporters:
     tls:
       insecure: true
 
+  opensearch:
+    http:
+      endpoint: "http://elasticsearch:9200"
+      tls:
+        insecure: true
+
   logging:
     verbosity: detailed
     
@@ -38,10 +44,11 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [logging, otlp/jaeger]
+      exporters: [otlp/jaeger]
       # exporters: [logging]
 
     logs:
       receivers: [otlp]
       processors: [batch]
-      exporters: [logging]
+      exporters: [logging, opensearch]
+      # exporters: [logging]

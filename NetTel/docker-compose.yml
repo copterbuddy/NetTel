@@ -1,22 +1,15 @@
+# cmd:  docker-compose up -d
+# cmd:  docker-compose down
 networks:
   monitoring:
-    driver: bridge
-
-volumes:
-  prometheus-data:
-    driver: local
-  grafana-data:
-    driver: local
-  es_data:
-    driver: local
-  ki_data:
-    driver: local
+    external: true
 
 services:
   NetTel:
     image: nettel
-    depends_on:
-      - otel-collector
+    container_name: nettel
+    # depends_on:
+    #   - otel-collector
     build:
       context: .
       dockerfile: Dockerfile
@@ -27,83 +20,3 @@ services:
       Otpl__Endpoint: http://otel-collector:4317
     networks:
       - monitoring
-  otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.99.0
-    command: [ "--config=/etc/otel-collector-config.yml" ]
-    volumes:
-      - ./config/otel-collector-config.yml:/etc/otel-collector-config.yml
-    ports:
-      - "8889:8889"
-      - "8890:8888"
-      - "13133:13133"
-      - "4317:4317"
-    networks:
-      - monitoring
-  prometheus:
-    image: prom/prometheus:latest
-    container_name: prometheus
-    ports:
-      - 9090:9090
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-    volumes:
-      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
-      - prometheus-data:/prometheus
-    restart: unless-stopped
-    networks:
-      - monitoring
-  grafana:
-    image: grafana/grafana-oss:latest
-    container_name: grafana
-    depends_on:
-      - jaeger
-      - prometheus
-      - otel-collector
-    ports:
-      - '3000:3000'
-    volumes:
-      - grafana-data:/var/lib/grafana
-    restart: unless-stopped
-    networks:
-      - monitoring
-  jaeger:
-    image: jaegertracing/all-in-one:latest
-    ports:
-      - "5775:5775"
-      - "6831:6831"
-      - "6832:6832"
-      - "5778:5778"
-      - "16686:16686"
-      - "14268:14268"
-      - "14250:14250"
-      - "9411:9411"
-    networks:
-      - monitoring
-
-  elasticsearch:
-    image: elasticsearch:7.17.21
-    container_name: elasticsearch
-    volumes:
-        - es_data:/usr/share/elasticsearch/data
-    environment:
-        - node.name=node01
-        - cluster.name=es-my-cluster
-        - discovery.type=single-node
-        - bootstrap.memory_lock=true
-        - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ports:
-        - "9200:9200"
-    networks:
-        - monitoring
-
-  kibana:
-    image: kibana:7.17.21
-    container_name: kibana
-    environment:
-        - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-    ports:
-        - "5601:5601"
-    depends_on:
-        - elasticsearch
-    networks:
-        - monitoring

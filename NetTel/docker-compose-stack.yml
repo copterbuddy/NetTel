@@ -38,7 +38,8 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
     volumes:
       - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
-      - prometheus-data:/prometheus
+      # - prometheus-data:/prometheus
+      - ./volumes_compose/prometheus:/prometheus
     restart: unless-stopped
     networks:
       - monitoring
@@ -52,12 +53,15 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      - grafana-data:/var/lib/grafana
+      # - grafana-data:/var/lib/grafana
+      - ./volumes_compose/grafana:/var/lib/grafana
     restart: unless-stopped
     networks:
       - monitoring
+
   jaeger:
     image: jaegertracing/all-in-one:latest
+    container_name: jaeger
     ports:
       - "5775:5775"
       - "6831:6831"
@@ -74,7 +78,8 @@ services:
     image: elasticsearch:7.17.21
     container_name: elasticsearch
     volumes:
-        - es_data:/usr/share/elasticsearch/data
+        # - es_data:/usr/share/elasticsearch/data
+        - ./volumes_compose/elasticsearch/data:/usr/share/elasticsearch/data
     environment:
         - node.name=node01
         - cluster.name=es-my-cluster
@@ -97,3 +102,19 @@ services:
         - elasticsearch
     networks:
         - monitoring
+
+  jenkins:
+    image: jenkins/jenkins:2.60.3
+    container_name: jenkins
+    privileged: true
+    user: root
+    ports:
+      - 8080:8080
+      - 50000:50000
+    networks:
+        - monitoring
+    volumes:
+      # - /home/${myname}/jenkins_compose/jenkins_configuration:/var/jenkins_home
+      # - /var/run/docker.sock:/var/run/docker.sock
+      - ./volumes_compose/jenkins/jenkins_configuration:/var/jenkins_home
+      - ./volumes_compose/jenkins/var/run/docker.sock:/var/run/docker.sock

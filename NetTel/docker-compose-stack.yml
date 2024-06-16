@@ -1,5 +1,5 @@
-# cmd:  docker-compose -f docker-compose-stack.yml up -d
-# cmd:  docker-compose -f docker-compose-stack.yml down
+# cmd: sudo docker-compose -f docker-compose-stack.yml up -d
+# cmd: sudo docker-compose -f docker-compose-stack.yml down
 networks:
   monitoring:
     name: monitoring

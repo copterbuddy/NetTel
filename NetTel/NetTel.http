@@ -4,3 +4,12 @@ GET {{NetTel_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+POST {{NetTel_HostAddress}}/user/register/
+Accept: application/json
+
+{
+
+}
+###
+

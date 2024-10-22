@@ -16,7 +16,25 @@ services:
     ports:
       - 5131:5131
     environment:
-      ASPNETCORE_ENVIRONMENT: Development,
+      ASPNETCORE_ENVIRONMENT: Development
       Otpl__Endpoint: http://otel-collector:4317
     networks:
       - monitoring
+ 
+  UserTel:
+    image: usertel
+    container_name: usertel
+    # depends_on:
+    #   - otel-collector
+    build:
+      context: ../UserTel
+      dockerfile: Dockerfile
+    ports:
+      - 5035:5035
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      UserTel__Endpoint: http://UserTel:5035
+      Otpl__Endpoint: http://otel-collector:4317
+    networks:
+      - monitoring
+    

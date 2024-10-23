@@ -47,15 +47,13 @@ internal class Program
                 });
         });
 
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
-
         builder.Services.AddOpenTelemetry()
             .WithMetrics(opt =>
             opt
                 .ConfigureResource(resource => resource.AddService("NetTelMertric"))
                 .AddMeter("NetTel")
                 .AddAspNetCoreInstrumentation()
+                .AddHttpClientInstrumentation()
                 .AddRuntimeInstrumentation()
                 .AddProcessInstrumentation()
                 .AddPrometheusExporter()
@@ -75,6 +73,9 @@ internal class Program
                 })
 
             );
+
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
 
 
         var app = builder.Build();
@@ -154,6 +155,8 @@ internal class Program
         .RequireCors(AllowAll);
 
         app.MapHealthChecks("/healthz");
+
+        app.MapPrometheusScrapingEndpoint();
 
         app.Run();
     }

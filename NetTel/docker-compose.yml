@@ -1,5 +1,7 @@
-# cmd: sudo docker-compose up -d
-# cmd: sudo docker-compose down
+# build cmd: sudo docker-compose -f docker-compose.yml build --no-cache
+# start cmd: sudo docker-compose -f docker-compose.yml up -d
+# stop cmd: sudo docker-compose -f docker-compose.yml down
+# restart cmd: sudo docker-compose -f docker-compose.yml down && sudo docker-compose -f docker-compose.yml build --no-cache && sudo docker-compose -f docker-compose.yml up -d
 networks:
   monitoring:
     external: true
@@ -17,6 +19,7 @@ services:
       - 5131:5131
     environment:
       ASPNETCORE_ENVIRONMENT: Development
+      UserTel__Endpoint: http://UserTel:5035
       Otpl__Endpoint: http://otel-collector:4317
     networks:
       - monitoring
@@ -33,7 +36,6 @@ services:
       - 5035:5035
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      UserTel__Endpoint: http://UserTel:5035
       Otpl__Endpoint: http://otel-collector:4317
     networks:
       - monitoring

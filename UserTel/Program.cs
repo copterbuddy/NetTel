@@ -1,5 +1,4 @@
 using DTO.User.Register;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;

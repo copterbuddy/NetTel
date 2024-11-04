@@ -7,6 +7,7 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using System.Security.Claims;
+using System.Xml.Linq;
 
 internal class Program
 {
@@ -173,7 +174,6 @@ internal class Program
                     Password = "password",
                 };
 
-                string requestBody = "";
                 using var client = new HttpClient();
                 var userTelEndpoint = builder.Configuration["UserTel:Endpoint"] ?? throw new Exception("UserTel:Endpoint cannot be null");
                 client.BaseAddress = new Uri(userTelEndpoint);
@@ -287,6 +287,76 @@ internal class Program
                 return Results.Unauthorized();
             }
         })
+        .RequireCors(AllowAll);
+
+        app.MapGet("/pokemons",async (HttpContext httpContext) =>
+        {
+            string? result;
+            try
+            {
+                User reqBody = new()
+                {
+                    UserName = "user",
+                    Password = "password",
+                };
+
+                using var client = new HttpClient();
+                var userTelEndpoint = builder.Configuration["PokemonTel:Endpoint"] ?? throw new Exception("PokemonTel:Endpoint cannot be null");
+                client.BaseAddress = new Uri(userTelEndpoint);
+                var response = await client.GetAsync("/pokemons");
+                if (response.IsSuccessStatusCode == false)
+                {
+                    //log
+                }
+
+                result = await response.Content.ReadAsStringAsync();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return result;
+        })
+        .WithName("GetPokemons")
+        .WithOpenApi()
+        .RequireCors(AllowAll);
+
+        app.MapGet("/pokemon/{name}/detail", async(HttpContext httpContext, string name) =>
+        {
+            string? result;
+            try
+            {
+                User reqBody = new()
+                {
+                    UserName = "user",
+                    Password = "password",
+                };
+
+                using var client = new HttpClient();
+                var userTelEndpoint = builder.Configuration["PokemonTel:Endpoint"] ?? throw new Exception("PokemonTel:Endpoint cannot be null");
+                client.BaseAddress = new Uri(userTelEndpoint);
+                var response = await client.GetAsync($"pokemon/{name}/detail");
+                if (response.IsSuccessStatusCode == false)
+                {
+                    //log
+                }
+
+                result = await response.Content.ReadAsStringAsync();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return result;
+        })
+        .WithName("GetPokemonDetail")
+        .WithOpenApi()
         .RequireCors(AllowAll);
 
         app.MapHealthChecks("/healthz");

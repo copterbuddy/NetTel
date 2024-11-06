@@ -252,22 +252,23 @@ internal class Program
 
         app.MapGet("/GoogleLogin/GetInfo",async (HttpContext httpContext) =>
         {
-            var aa = httpContext.Request.Cookies.Count;
-            if (httpContext.User.Identity?.IsAuthenticated == true)
+            var authCookies = httpContext?.Request?.Cookies?.Where(c => c.Key.Contains(".AspNetCore.Application"))?.Count();
+            if (authCookies is null or 0)
             {
-                // ส่งข้อมูล user กลับถ้าผู้ใช้ login แล้ว
-                var userInfo = new
-                {
-                    Email = httpContext.User.FindFirst(ClaimTypes.Email)?.Value
-                };
-
-                return Results.Ok(userInfo); // ส่งข้อมูลผู้ใช้ไปให้ frontend
+                return Results.Ok();
             }
-            else
+
+            if (httpContext?.User?.Identity?.IsAuthenticated == false)
             {
-                // ถ้าไม่ login ส่ง StatusCode 401
                 return Results.Unauthorized();
             }
+
+            var userInfo = new
+            {
+                Email = httpContext.User.FindFirst(ClaimTypes.Email)?.Value
+            };
+
+            return Results.Ok(userInfo);
         })
         .RequireCors(AllowAll);
 

@@ -16,6 +16,22 @@ volumes:
     driver: local
 
 services:
+  sql-server:
+    image: 'mcr.microsoft.com/mssql/server:2019-CU19-ubuntu-20.04'
+    container_name: sql-server
+    restart: always
+    ports:
+        - '1433:1433'
+    environment:
+        - ACCEPT_EULA=Y
+        - SA_PASSWORD=P@ssw0rd
+    volumes:
+        - './volumes_compose/mssql/data:/var/opt/mssql/data'
+        - './volumes_compose/mssql/log:/var/opt/mssql/log'
+        - './volumes_compose/mssql/secrets:/var/opt/mssql/secrets'
+    networks:
+       - monitoring
+
   otel-collector:
     image: otel/opentelemetry-collector-contrib:0.99.0
     container_name: otel-collector
@@ -29,6 +45,7 @@ services:
       - "4317:4317"
     networks:
       - monitoring
+
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
@@ -43,6 +60,7 @@ services:
     restart: unless-stopped
     networks:
       - monitoring
+
   grafana:
     image: grafana/grafana-oss:latest
     container_name: grafana

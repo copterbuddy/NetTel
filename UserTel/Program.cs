@@ -1,9 +1,14 @@
 using DTO.User.Register;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using UserTel.Repositories.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -73,6 +78,18 @@ builder.Services.AddOpenTelemetry()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
+
+builder.Services.AddIdentityCore<IdentityUser>(options =>
+{
+    options.Password.RequiredLength = 6;
+})
+    .AddEntityFrameworkStores<UserContext>()
+    .AddApiEndpoints();
+
+builder.Services.AddDbContext<UserContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 var app = builder.Build();
 
 app.UseCors(AllowAll);
@@ -97,5 +114,7 @@ app.MapPost("/users/register", ([FromBody] User user) =>
 app.MapHealthChecks("/healthz");
 
 app.MapPrometheusScrapingEndpoint();
+
+app.MapIdentityApi<IdentityUser>();
 
 app.Run();
